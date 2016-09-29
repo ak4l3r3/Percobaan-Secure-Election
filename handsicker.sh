@@ -223,16 +223,6 @@ sleep 2
 		
 	fi
 	
-	#######################################################
-	## Error klo gak bisa nangkep interface 1 mode monitor
-	#######################################################
-
-	#if [ $(ifconfig | grep $MON1) -z ] 2> /dev/null
-	#then
-	#	echo " [*] ERROR: $NIC card could not be started! airmon-ng gak jalan"$RST
-	#	fexit
-	#fi
-	
 	
 	############################
 	## Cek interface ke dua
@@ -505,7 +495,7 @@ fbotstart()
 	echo " [*]$GRN Scanning$BLU for new Active Clients.. ";
 	if [ $NIC2 -z ] 2> /dev/null
 	then
-		gnome-terminal "$NIC Scanning for $WPW.." --geometry=100x20+0+200 -x airodump-ng -f 400 $MON1 -w $HOME/tmp -o csv --encrypt $WPW&
+		gnome-terminal "$NIC Scanning for $WPW.." --geometry=100x20+0+200 -x airodump-ng $MON1 -w $HOME/tmp -o csv --encrypt $WPW&
 	else
 		gnome-terminal "$NIC Scanning for $WPW.." --geometry=100x20+0+200 -x airodump-ng $MON1 -w $HOME/tmp -o csv --encrypt $WPW&
 		gnome-terminal "$NIC2 Scanning for $WPW.." --geometry=100x20+0+600 -x airodump-ng $MON2 -w $HOME/tmpe -o csv --encrypt $WPW&
@@ -528,7 +518,7 @@ fautobot()	#Automagically find new target clients
 		rm -rf $HOME/tmp*
 		if [ $NIC2 -z ] 2> /dev/null
 		then
-			gnome-terminal "$NIC Scanning for $WPW.." --geometry=100x20+0+200 -f 400 -x airodump-ng $MON1 -w $HOME/tmp -o csv --encrypt $WPW&
+			gnome-terminal "$NIC Scanning for $WPW.." --geometry=100x20+0+200 -x airodump-ng $MON1 -w $HOME/tmp -o csv --encrypt $WPW&
 		else
 			gnome-terminal "$NIC Scanning for $WPW.." --geometry=100x20+0+200 -x airodump-ng $MON1 -f 40 -w $HOME/tmp -o csv --encrypt $WPW&
 			gnome-terminal "$NIC2 Scanning for $WPW.." --geometry=100x20+0+600 -x airodump-ng $MON2 -f 40 -w $HOME/tmpe -o csv --encrypt $WPW&
@@ -680,7 +670,7 @@ fautobot()	#Automagically find new target clients
 		fautobot
 	fi
 	clear
-	echo $RED" [>]$GRN AUTOBOT$RED LOCKED IN [<] "
+	echo $RED" [>]$GRN FAUTOBOT()$RED LOCKED IN [<] "
 	echo
 			echo $GRN""" [*] Client found!:
  [*] ESSID: $ESSID
@@ -754,7 +744,7 @@ fautocap()										#Deauth targets and collect handshakes
 	DONE="";CLINUM=1;DISPNUM=1;DECNT=0
 	if [ $SILENT -z ] 2> /dev/null
 	then
-		beep -f 700 
+		beep -f 700 -l 300
 		#-l 25;beep -f 100 -l 100;beep -f 1200 -l 15;beep -f 840 -l 40;beep -f 1200 -l 15
 	fi
 	while [ $DONE -z ] 2> /dev/null
@@ -801,7 +791,7 @@ fautocap()										#Deauth targets and collect handshakes
 		clear
 		if [ $DO = 'A' ] 2> /dev/null
 		then
-			echo $RED" [>]$GRN AUTOBOT$RED LOCKED IN [<] ";echo
+			echo $RED" [>]$GRN FAUTOCAP() AUTOBOT$RED LOCKED IN [<] ";echo
 		fi
 		if [ $(echo $ESSID | wc -c) -ge 16 ] 2> /dev/null
 		then
@@ -958,8 +948,7 @@ fautocap()										#Deauth targets and collect handshakes
 	then
 		DECNT=$((DECNT + 1))
 	fi
-	echo "GDONE nilainya adalah.................."
-	echo $GDONE
+	echo "GDONE nilainya adalah.......... $GDONE"
 	if [ $GDONE = "1" ] 2> /dev/null
 	then
 		DONE=1
