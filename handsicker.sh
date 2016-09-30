@@ -113,8 +113,6 @@ sleep 2
 		if [ -f $PCAP ] 2> /dev/null
 		then
 			clear
-			echo $RED"iniloh PCAP nya : $PCAP"
-			sleep 3
 			fcrack
 		else
 			echo $RED;$COLOR2 9;$COLOR 1
@@ -149,10 +147,6 @@ sleep 2
 	touch $OUTDIR/got
 	MNUM=0
 	
-	##################################################
-	## E -e - Search for AP by partial unique ESSID ##
-	##################################################
-	
 	if [ $DO -z ] 2> /dev/null
 	then
 		DO=E
@@ -165,19 +159,12 @@ sleep 2
 		fi
 	fi
 	
-	##########################################################
-	## -d  - Deauth packets sent to each client (default 1) ##
-	##########################################################
-	
 	iw reg set BO
 	if [ $PACKS -z ] 2> /dev/null
 	then
 		PACKS=1
 	fi
 	
-	#################################################
-	## -g  - Use android GPS to record AP location ##
-	#################################################
 	if [ $GPS -z ] 2> /dev/null
 	then		
 		CHKILL=$(airmon-ng check kill | grep trouble)
@@ -189,21 +176,14 @@ sleep 2
 			echo $GRN" [*] Killing all those processes..."
 		fi
 	fi
-	
-	####################################################
-	## cek klo ada interface yang ke set mode monitor ##
-	####################################################
+
 	MONS="$(ifconfig | grep mon | cut -d ':' -f 1)"
+	
 	for MON in $MONS
 	do
 		airmon-ng stop $MON | grep removedgdan
 	done
 
-	####################################################
-	## pilih interface untuk di set ke mode monitor   ##
-	####################################################
-	
-	
 	if [ $NIC -z ] 2> /dev/null
 	then
 		clear
@@ -226,10 +206,6 @@ sleep 2
 		
 	fi
 	
-	
-	############################
-	## Cek interface ke dua
-	############################
 	
 	if [ $NIC2 -z ] 2> /dev/null
 	then
@@ -261,10 +237,6 @@ sleep 2
 	fi
 	
 	
-	#####################################
-	## -a - Autobot or wardriving mode ##
-	#####################################
-	
 	if [ $DO = 'A' ] 2> /dev/null
 	then
 		echo $RST
@@ -285,9 +257,6 @@ sleep 2
 	fi
 }
 
-###########################################
-###            Grep for AP ESSID        ###
-###########################################
 
 fapscan()										
 {
@@ -333,10 +302,6 @@ fapscan()
 	echo "$TMPF" > $HOME/tmp-01.csv
 	fclientscan
 }
-
-###########################################
-###             List all APs            ###
-###########################################
 
 flistap()										
 {
@@ -388,9 +353,6 @@ flistap()
 	fclientscan
 }
 
-###########################################
-###         Find active clients         ###
-###########################################
 fclientscan()										
 {
 	CNT="0"
@@ -458,11 +420,6 @@ fclientscan()
 	fautocap
 }
 
-###########################################
-###            Startup Autobot          ###
-###########################################
-
-
 fbotstart()		
 {	
 	killall airodump-ng 2> /dev/null
@@ -510,7 +467,7 @@ fbotstart()
 	fautobot
 }
 
-fautobot()	#Automagically find new target clients
+fautobot()	
 {	
 	sleep 0.7
 	BSSIDS=""
@@ -748,7 +705,7 @@ fautocap()										#Deauth targets and collect handshakes
 	if [ $SILENT -z ] 2> /dev/null
 	then
 		beep -f 700 -l 300
-		#-l 25;beep -f 100 -l 100;beep -f 1200 -l 15;beep -f 840 -l 40;beep -f 1200 -l 15
+		
 	fi
 	while [ $DONE -z ] 2> /dev/null
 	do
@@ -1070,7 +1027,7 @@ fautocap()										#Deauth targets and collect handshakes
 	fi
 }		
 
-fanalyze()										#Analyze pcap for handshakes
+fanalyze()										
 {
 	GDONE="";EDONE="";ANALYZE="";ANALYZE2=""
 	if [ -f $HOME/tmp-01.cap ] 2> /dev/null
@@ -1105,7 +1062,7 @@ fanalyze()										#Analyze pcap for handshakes
 	fi
 }
 
-fcrack()										#Crack handshakes
+fcrack()										
 {
 	
 	clear
@@ -1138,9 +1095,7 @@ fcrack()										#Crack handshakes
 	fexit
 }
 
-#Grep for AP ESSID
-
-fstartgps()										#Configure GPS
+fstartgps()										
 {
 	clear
 	echo $GRN""" [*] On your$RED Android$GRN phone:$BLU
