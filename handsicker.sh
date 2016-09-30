@@ -5,8 +5,8 @@ fhelp()											#Help
 	echo $RST""" 
 handsicker - Detect, deauth, capture, crack WPA/2 handshakes, WPS Pins and WEP Keys automagically.  
  edited by dojoku  from original by d4rkcat <thed4rkcat@yandex.com>
- Require : - kali-rolling Version 2016.2
- 		   - 	
+ Require : - Kali Rolling Version 2016.2
+ 	   - Distribution Upgrade Kali rolling
              
 	Usage: 	handsicker <Method> <Options>
 	
@@ -112,6 +112,9 @@ sleep 2
 	then
 		if [ -f $PCAP ] 2> /dev/null
 		then
+			clear
+			echo $RED"iniloh PCAP nya : $PCAP"
+			sleep 3
 			fcrack
 		else
 			echo $RED;$COLOR2 9;$COLOR 1
@@ -1104,8 +1107,7 @@ fanalyze()										#Analyze pcap for handshakes
 
 fcrack()										#Crack handshakes
 {
-	PFILE=$OUTDIR/$ESSID-$DATE".cap"
-	ESSID=$(echo "$ESSID" | sed 's/_/ /g')
+	
 	clear
 	if [ $WORDLIST -z ] 2> /dev/null
 	then
@@ -1122,10 +1124,12 @@ fcrack()										#Crack handshakes
 	else
 		if [ $CRACK = "1" ] 2> /dev/null
 		then
-			echo $BLU
-			aircrack-ng -q -w $WORDLIST $PCAP
+			echo $BLU"This process will begin"
+			aircrack-ng -w $WORDLIST $PCAP
 			echo $RST
 		else
+			PFILE=$OUTDIR/$ESSID-$DATE".cap"
+			ESSID=$(echo "$ESSID" | sed 's/_/ /g')
 			echo $BLU
 			cowpatty -f $WORDLIST -s "$ESSID" -r $PFILE
 			echo $RST
