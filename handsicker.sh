@@ -908,7 +908,7 @@ fautocap()										#Deauth targets and collect handshakes
 	then
 		DECNT=$((DECNT + 1))
 	fi
-	echo "GDONE nilainya adalah.......... $GDONE"
+	echo "Suck My $GDONE"
 	if [ $GDONE = "1" ] 2> /dev/null
 	then
 		DONE=1
